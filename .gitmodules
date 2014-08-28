@@ -1,0 +1,3 @@
+[submodule "tcl"]
+	path = tcl
+	url = https://github.com/tcltk/tcl.git

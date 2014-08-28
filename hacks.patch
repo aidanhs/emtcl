@@ -1,0 +1,16 @@
+diff --git a/generic/tcl.h b/generic/tcl.h
+--- a/generic/tcl.h
++++ b/generic/tcl.h
+@@ -1,3 +1,4 @@
++#undef TCL_WIDE_INT_IS_LONG
+ /*
+  * tcl.h --
+  *
+diff --git a/unix/tclUnixCompat.c b/unix/tclUnixCompat.c
+--- a/unix/tclUnixCompat.c
++++ b/unix/tclUnixCompat.c
+@@ -1,3 +1,4 @@
++#undef HAVE_CPUID
+ /*
+  * tclUnixCompat.c
+  *
