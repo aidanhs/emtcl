@@ -81,6 +81,7 @@ summation destroy</textarea></div>
             var $outbox = $('#tcl_out > div > pre');
             var outln = function (val) {
               $outbox.text($outbox.text() + val + '\n');
+              $outbox[0].scrollTop = $outbox[0].scrollHeight;
             }
 
             var eval_tcl = (function () {
