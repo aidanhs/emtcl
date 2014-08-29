@@ -5,12 +5,12 @@ EMFLAGS=\
 EMEXPORTS=\
 	-s EXPORTED_FUNCTIONS="['_Tcl_Eval','_Tcl_CreateInterp','_Tcl_GetStringResult']"
 
-default: libtcl.js
+default: emtcl.js
 
-libtcl.js: libtcl.bc
+emtcl.js: emtcl.bc
 	emcc $(EMFLAGS) $(EMEXPORTS) $< -o $@
 
-libtcl.bc:
+emtcl.bc:
 	cd tcl/unix && emmake make
 	[ -e $@ ] || \
 		(T=$$(. ./tcl/unix/tclConfig.sh && echo $$TCL_LIB_FILE) && ln -s tcl/unix/$$T $@)
