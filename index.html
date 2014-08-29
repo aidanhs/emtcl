@@ -40,7 +40,7 @@
           <p>This is a simple test page for running Tcl in the browser.</p>
           <p>
             Hitting 'run' will run the specified script in the interpreter, or you can use it in a more repl-like manner with Ctrl+Enter (which will clear the script window).<br>
-            stdout is displayed on the right (stderr is currently not available!).
+            stdout and stderr are displayed on the alongside script output (like with tclsh).
           </p>
           <button id="tcl_run">Run!</button>
           <div id="demoarea" style="height: 400px; font-size: 0.9em;">
@@ -53,14 +53,13 @@
             'use strict';
             var eval_tcl = (function () {
               var out = $('#tcl_out > div > pre');
+              var interp = emtcl.CreateInterp();
               var outln = function (val) {
                 out.text(out.text() + val + '\n');
               }
-              var interp = null;
+              emtcl.Module.print = emtcl.Module.printErr = outln;
+
               return function (evalstr) {
-                if (interp === null) {
-                  interp = emtcl.CreateInterp();
-                }
                 // This prints any stdout
                 var retval = emtcl.Eval(interp, evalstr);
                 var retstr = emtcl.GetStringResult(interp);
