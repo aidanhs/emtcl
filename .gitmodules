@@ -1,0 +1,3 @@
+[submodule "lib/emtcl"]
+	path = lib/emtcl
+	url = https://github.com/aidanhs/emtcl.git
