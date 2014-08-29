@@ -1,6 +1,6 @@
 EMFLAGS=\
 	--pre-js js/preJs.js --post-js js/postJs.js\
-	--memory-init-file 0 -O2 --llvm-lto 1 --closure 0
+	--memory-init-file 0 -O3 --llvm-lto 1 --closure 0
 
 EMEXPORTS=\
 	-s EXPORTED_FUNCTIONS="['_Tcl_Eval','_Tcl_CreateInterp','_Tcl_GetStringResult']"
