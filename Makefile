@@ -1,8 +1,12 @@
-default:
+default: libtcl.js
+
+libtcl.js: libtcl.bc
+	emcc -s EXPORTED_FUNCTIONS="['_Tcl_Eval','_Tcl_CreateInterp']" -O2 $< -o $@
+
+libtcl.bc:
 	cd tcl/unix && emmake make
-	T=$$(. ./tcl/unix/tclConfig.sh && echo $$TCL_LIB_FILE) &&\
-		[ -f libtcl.bc ] || ln -s tcl/unix/$$T libtcl.bc
-	emcc -s EXPORTED_FUNCTIONS="['_Tcl_Eval','_Tcl_CreateInterp']" -O2 libtcl.bc -o libtcl.js
+	[ -e $@ ] || \
+		(T=$$(. ./tcl/unix/tclConfig.sh && echo $$TCL_LIB_FILE) && ln -s tcl/unix/$$T $@)
 
 prep:
 	cd tcl && git apply ../hacks.patch
