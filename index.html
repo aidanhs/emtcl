@@ -47,9 +47,32 @@
           </p>
           <button id="tcl_run">Run!</button>
           <div id="demoarea" style="height: 400px; font-size: 0.9em;">
-            <div id="tcl_in" style="float: left; height: 100%; width: 50%;"><textarea style="box-sizing:border-box; width: 100%; height: 100%; font-family: monospace;"></textarea></div>
+            <div id="tcl_in" style="float: left; height: 100%; width: 50%;"><textarea style="box-sizing:border-box; width: 100%; height: 100%; font-family: monospace; font-size: 0.9em;">package require TclOO
+oo::class create summation {
+    constructor {} {
+        variable v 0
+    }
+    method add x {
+        variable v
+        incr v $x
+    }
+    method value {} {
+        variable v
+        return $v
+    }
+    destructor {
+        variable v
+        puts "Ended with value $v"
+    }
+}
+set sum [summation new]
+puts "Start with [$sum value]"
+for {set i 1} {$i &lt;= 10} {incr i} {
+    puts "Add $i to get [$sum add $i]"
+}
+summation destroy</textarea></div>
             <div id="tcl_out" style="float: left; height: 100%; width: 50%;"><!--
-            --><div style="height: 99%; border-width: 1px; border-style: solid; border-color: black;"><pre style="border-style: none; font-size: 0.9em; margin: 0;"></pre></div><!--
+            --><div style="height: 99%; border-width: 1px; border-style: solid; border-color: black;"><pre style="border-style: none; font-size: 0.9em; margin: 2px;"></pre></div><!--
             --></div>
           </div>
           <script>
