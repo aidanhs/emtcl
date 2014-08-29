@@ -1,0 +1,1 @@
+{"name":"EmTcl","tagline":"Tcl compiled with emscripten","body":"This is a simple test page for running Tcl in the browser.\r\n\r\nHitting 'run' will run the specified script in the interpreter. stdout is displayed on the right (stderr is currently not available!).","google":"","note":"Don't delete this file! It's used internally to help with page regeneration."}
