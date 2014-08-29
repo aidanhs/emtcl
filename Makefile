@@ -1,7 +1,9 @@
+EMFLAGS=--memory-init-file 0 -O2 --llvm-lto 1 --closure 0
+
 default: libtcl.js
 
 libtcl.js: libtcl.bc
-	emcc -s EXPORTED_FUNCTIONS="['_Tcl_Eval','_Tcl_CreateInterp']" -O2 $< -o $@
+	emcc $(EMFLAGS) -s EXPORTED_FUNCTIONS="['_Tcl_Eval','_Tcl_CreateInterp']" $< -o $@
 
 libtcl.bc:
 	cd tcl/unix && emmake make
