@@ -51,12 +51,14 @@
           </div>
           <script>
             'use strict';
+            var $inbox = $('#tcl_in > textarea');
+            var $outbox = $('#tcl_out > div > pre');
+            var outln = function (val) {
+              $outbox.text($outbox.text() + val + '\n');
+            }
+
             var eval_tcl = (function () {
-              var out = $('#tcl_out > div > pre');
               var interp = emtcl.CreateInterp();
-              var outln = function (val) {
-                out.text(out.text() + val + '\n');
-              }
               emtcl.Module.print = emtcl.Module.printErr = outln;
 
               return function (evalstr) {
@@ -73,11 +75,12 @@
             $('#tcl_run').on('click', function () {
                 eval_tcl($('#tcl_in > textarea').val());
             });
-            $('#tcl_in > textarea').keydown(function (e) {
+            $inbox.keydown(function (e) {
               // Ctrl-Enter pressed
               if ((e.keyCode == 10 || e.keyCode == 13) && e.ctrlKey) {
-                eval_tcl($('#tcl_in > textarea').val());
-                $('#tcl_in > textarea').val('')
+                outln('% ' + $inbox.val());
+                eval_tcl($inbox.val());
+                $inbox.val('');
               }
             });
           </script>
