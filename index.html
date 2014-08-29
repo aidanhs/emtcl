@@ -38,9 +38,12 @@
         <article class="_commented_markdown-body">
           <h3>EmTcl Test Page</h3>
           <p>This is a simple test page for running Tcl in the browser.</p>
-          <p>
-            Hitting 'run' will run the specified script in the interpreter, or you can use it in a more repl-like manner with Ctrl+Enter (which will clear the script window).<br>
-            stdout and stderr are displayed on the alongside script output (like with tclsh).
+          <p>The box on the left holds input, the right holds output. You can
+            <ul>
+              <li>Hit 'Run!' to evaluate, inspect output, tweak and re-run.</li>
+              <li>Hit Ctrl+Enter to use it in a more repl-like manner (which will clear the script window and generally make a vague effort to be a bit like tclsh).</li>
+            </ul>
+            stdout and stderr are displayed on the alongside script output (like in tclsh).
           </p>
           <button id="tcl_run">Run!</button>
           <div id="demoarea" style="height: 400px; font-size: 0.9em;">
