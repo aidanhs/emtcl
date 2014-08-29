@@ -49,7 +49,10 @@
           <script>
             'use strict';
             var eval_tcl = (function () {
-                var out = $('#tcl_out > div > pre');
+              var out = $('#tcl_out > div > pre');
+              var outln = function (val) {
+                out.text(out.text() + val + '\n');
+              }
               var interp = null;
               return function (evalstr) {
                 if (interp === null) {
@@ -57,8 +60,12 @@
                 }
                 // This prints any stdout
                 var retval = emtcl.Eval(interp, evalstr);
-                out.text(out.text() + emtcl.GetStringResult(interp));
-                out.text(out.text() + '\n-------------\n');
+                var retstr = emtcl.GetStringResult(interp);
+                // Emulate tclsh a bit
+                if (retstr !== '') {
+                  outln(emtcl.GetStringResult(interp));
+                }
+                outln('------' + (retval ? 'ERR ABOVE!' : '') + '------');
               };
             })();
             $('#tcl_run').on('click', function () {
