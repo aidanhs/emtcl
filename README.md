@@ -5,6 +5,9 @@ The imaginatively named emtcl lets you compile tcl with emscripten. It's pretty 
 
 Rather than trying to compile tclsh and get stdin working, it instead compiles the tcl library and exposes some C api calls. See js/postJs.js for how this is done.
 
+Current supported interpreters (and their versions) are:
+ - tcl - core\_8\_6\_1
+
 BUILD
 -----
 
