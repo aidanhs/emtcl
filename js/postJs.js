@@ -2,6 +2,9 @@
     }
   };
 
+  root.emtcl = root.TCL;
+  delete root.TCL;
+
   root.emtcl();
   // Undo pollution of window
   delete window.Module;
@@ -18,6 +21,6 @@
       'number' // interp pointer
   ]);
 
-  return root;
+  self.emtcl = root;
 
-})();
+})(this);

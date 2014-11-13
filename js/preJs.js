@@ -1,7 +1,7 @@
-this.emtcl = (function () {
+(function (self) {
 
   var root = {
-    emtcl: function () {
+    TCL: function () {
       var Module = {
         noInitialRun: true,
         noExitRuntime: true,
