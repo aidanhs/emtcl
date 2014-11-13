@@ -20,7 +20,7 @@ Pretty easy (assuming you've got the emscripten sdk on your path):
 or for jimtcl:
 
     $ make jimtclprep # One off prep - tweaks appropriate #defines
-    $ make jimtcl     # Build emjimtcl.js
+    $ make emjimtcl   # Build emjimtcl.js
 
 If you want to totally reset all build files in ./tcl/ and start again:
 
