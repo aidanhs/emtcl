@@ -1,5 +1,6 @@
+# post-js happens below so we can conditionally write cwrap code
 EMFLAGS=\
-	--pre-js js/preJs.js --post-js js/postJs.js\
+	--pre-js js/preJs.js\
 	--memory-init-file 0 -O3 --llvm-lto 1 --closure 0
 
 EMTCLEXPORTS=\
@@ -13,9 +14,8 @@ EMJIMTCLEXPORTS=\
 	-s EXPORTED_FUNCTIONS="[\
 		'_Jim_CreateInterp',\
 		'_Jim_RegisterCoreCommands',\
-		'_Jim_InitStaticExtensions'\
-		'_Jim_Eval'\
-		'_Jim_GetString'\
+		'_Jim_Eval',\
+		'_Jim_GetString',\
 		'_Jim_GetResult'\
 	]"
 
@@ -26,10 +26,10 @@ emtcl: emtcl.js
 emjimtcl: emjimtcl.js
 
 emtcl.js: emtcl.bc
-	emcc $(EMFLAGS) $(EMTCLEXPORTS) $< -o $@
+	emcc --post-js js/postJsTcl.js $(EMFLAGS) $(EMTCLEXPORTS) $< -o $@
 
 emjimtcl.js: emjimtcl.bc
-	emcc $(EMFLAGS) $(EMJIMTCLEXPORTS) $< -o $@
+	emcc --post-js js/postJsJimtcl.js $(EMFLAGS) -Ijimtcl jimgetresult.c $(EMJIMTCLEXPORTS) $< -o $@
 
 emtcl.bc:
 	cd tcl/unix && emmake make
@@ -50,6 +50,7 @@ jimtclprep:
 	sed -i '/^#define HAVE_EXECVPE/d' jimtcl/jimautoconf.h
 	sed -i '/^#define HAVE_SYS_SIGLIST/d' jimtcl/jimautoconf.h
 	sed -i '1s/^/#include <unistd.h>\n/' jimtcl/jim-exec.c
+	echo -e '#include <jim.h>\nundef Jim_GetResult\nJim_Obj *Jim_GetResult(Jim_Interp *i) { return ((i)->result); }' > jimgetresult.c
 
 reset:
 	@read -p "This nukes anything not git-controlled in ./tcl/ and ./jimtcl/, are you sure? Type 'y' if so: " P && [ $$P = y ]
