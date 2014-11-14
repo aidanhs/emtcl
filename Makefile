@@ -29,7 +29,7 @@ emtcl.js: emtcl.bc
 	emcc --post-js js/postJsTcl.js $(EMFLAGS) $(EMTCLEXPORTS) $< -o $@
 
 emjimtcl.js: emjimtcl.bc
-	emcc --post-js js/postJsJimtcl.js $(EMFLAGS) -Ijimtcl jimgetresult.c $(EMJIMTCLEXPORTS) $< -o $@
+	emcc --post-js js/postJsJimtcl.js $(EMFLAGS) -Ijimtcl jimtcl/jimgetresult.c $(EMJIMTCLEXPORTS) $< -o $@
 
 emtcl.bc:
 	cd tcl/unix && emmake make
@@ -41,16 +41,12 @@ emjimtcl.bc:
 	[ -e $@ ] || ln -s jimtcl/libjim.a $@
 
 tclprep:
-	cd tcl && git apply ../hacks.patch
+	cd tcl && git apply ../tclhacks.patch
 	cd tcl/unix && emconfigure ./configure --disable-threads --disable-load --disable-shared
 
 jimtclprep:
 	cd jimtcl && emconfigure ./configure --full --disable-docs
-	sed -i '/^#define HAVE_BACKTRACE/d' jimtcl/jimautoconf.h
-	sed -i '/^#define HAVE_EXECVPE/d' jimtcl/jimautoconf.h
-	sed -i '/^#define HAVE_SYS_SIGLIST/d' jimtcl/jimautoconf.h
-	sed -i '1s/^/#include <unistd.h>\n/' jimtcl/jim-exec.c
-	echo -e '#include <jim.h>\nundef Jim_GetResult\nJim_Obj *Jim_GetResult(Jim_Interp *i) { return ((i)->result); }' > jimgetresult.c
+	cd jimtcl && git apply ../jimtclhacks.patch
 
 reset:
 	@read -p "This nukes anything not git-controlled in ./tcl/ and ./jimtcl/, are you sure? Type 'y' if so: " P && [ $$P = y ]
