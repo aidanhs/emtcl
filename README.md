@@ -19,7 +19,7 @@ Pretty easy (assuming you've got the emscripten sdk on your path):
 
 or for jimtcl:
 
-    $ make jimtclprep # One off prep - tweaks appropriate #defines
+    $ make jimtclprep # One off prep - tweaks appropriate #defines and configure
     $ make emjimtcl   # Build emjimtcl.js
 
 If you want to totally reset all build files in ./tcl/ and start again:
@@ -27,3 +27,21 @@ If you want to totally reset all build files in ./tcl/ and start again:
     $ make reset
 
 This removes all changes in there, so be careful!
+
+TODO
+----
+
+There are a number of broken things with each of these Tcl implementations.
+
+tcl:
+
+ - `clock` command isn't present. Caused by not calling `Tcl_Init`, would
+   require embedding the `library` directory. Entirely possible, just not put
+   the effort in.
+ - `after 2000 {set ::cond_var 0}; vwait ::cond_var` doesn't work. This seems to
+   be an emscripten problem, not sure how easy it is to solve.
+
+jimtcl:
+
+ - `package` command isn't present. Not sure of cause.
+ - `Jim_InitStaticExtensions` isn't called. Not sure what the implications are.
