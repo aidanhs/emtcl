@@ -1,7 +1,9 @@
 # post-js happens below so we can conditionally write cwrap code
 EMFLAGS=\
 	--pre-js js/preJs.js\
-	--memory-init-file 0 -O3 --llvm-lto 1 --closure 0
+	--memory-init-file 0 -O3 --llvm-lto 3 --closure 0\
+	#-s FORCE_ALIGNED_MEMORY=1 -s CLOSURE_COMPILER=1 -s CLOSURE_ANNOTATIONS=1\
+	#-s NODE_STDOUT_FLUSH_WORKAROUND=0 -s RUNNING_JS_OPTS=1
 
 EMTCLEXPORTS=\
 	-s EXPORTED_FUNCTIONS="[\
