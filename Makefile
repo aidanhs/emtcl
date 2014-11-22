@@ -1,4 +1,4 @@
-# post-js happens below so we can conditionally write cwrap code
+# post-js happens later to write cwrap code conditional on tcl distro
 EMFLAGS=\
 	--pre-js js/preJs.js\
 	--memory-init-file 0 -O3 --llvm-lto 3 --closure 0\
