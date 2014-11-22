@@ -31,7 +31,8 @@ emtcl.js: emtcl.bc
 	emcc --post-js js/postJsTcl.js $(EMFLAGS) $(EMTCLEXPORTS) $< -o $@
 
 emjimtcl.js: emjimtcl.bc
-	emcc --post-js js/postJsJimtcl.js $(EMFLAGS) -Ijimtcl jimtcl/jimgetresult.c $(EMJIMTCLEXPORTS) $< -o $@
+	emcc --post-js js/postJsJimtcl.js $(EMFLAGS) $(EMJIMTCLEXPORTS) \
+		-Ijimtcl jimtcl/jimgetresult.c $< -o $@
 
 emtcl.bc:
 	cd tcl/unix && emmake make
