@@ -23,6 +23,7 @@ int DomCmd(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST o
 		return TCL_ERROR;
 	}
 
+	// TODO: always catch errors
 	int numChanged = EM_ASM_INT({
 		var action   = Pointer_stringify($0);
 		    selector = Pointer_stringify($1);
