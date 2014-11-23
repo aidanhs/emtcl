@@ -1,3 +1,6 @@
+# Whether to build the optional `dom` command into tcl
+EMTCLDOM?=1
+
 # Optimisation to use for generating bc
 BCFLAGS=-Oz
 # post-js happens later to write cwrap code conditional on tcl distro
@@ -11,7 +14,8 @@ EMTCLEXPORTS=\
 	-s EXPORTED_FUNCTIONS="[\
 		'_Tcl_CreateInterp',\
 		'_Tcl_Eval',\
-		'_Tcl_GetStringResult'\
+		'_Tcl_GetStringResult',\
+		$$([ $(EMTCLDOM) = 1 ] && echo "'_CreateDomCmd'," || true)\
 	]"
 
 EMJIMTCLEXPORTS=\
@@ -20,7 +24,7 @@ EMJIMTCLEXPORTS=\
 		'_Jim_RegisterCoreCommands',\
 		'_Jim_Eval',\
 		'_Jim_GetString',\
-		'_Jim_GetResult'\
+		'_Jim_GetResult',\
 	]"
 
 .PHONY: default tcl jimtcl tclprep jimtclprep reset
@@ -30,7 +34,8 @@ emtcl: emtcl.js
 emjimtcl: emjimtcl.js
 
 emtcl.js: emtcl.bc
-	emcc --post-js js/postJsTcl.js $(EMFLAGS) $(EMTCLEXPORTS) $< -o $@
+	emcc --post-js js/postJsTcl.js $(EMFLAGS) $(EMTCLEXPORTS) \
+		$$([ $(EMTCLDOM) = 1 ] && echo '-Itcl/generic opt/dom.c' || true) $< -o $@
 
 emjimtcl.js: emjimtcl.bc
 	emcc --post-js js/postJsJimtcl.js $(EMFLAGS) $(EMJIMTCLEXPORTS) \
