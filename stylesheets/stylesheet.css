@@ -902,3 +902,37 @@ footer .owner p a {
   max-width: 100%;
   box-sizing: border-box;
 }
+
+/*********** CUSTOM ************/
+.demoarea {
+  height: 400px;
+  font-size: 0.9em;
+}
+
+#tcl_in, #tcl_out, #jimtcl_in, #jimtcl_out {
+  float: left;
+  height: 100%;
+  width: 50%;
+}
+
+#tcl_in > textarea, #jimtcl_in > textarea {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+#tcl_out > div, #jimtcl_out > div {
+  height: 100%;
+  border-width: 1px;
+  border-style: solid;
+  border-color: black;
+}
+
+#tcl_out > div > pre, #jimtcl_out > div > pre {
+  border-style: none;
+  font-size: 0.9em;
+  margin: 2px;
+  height: 100%;
+}

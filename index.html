@@ -48,8 +48,8 @@
           </p>
 
           <button id="tcl_run">Run!</button>
-          <div id="demoarea" style="height: 400px; font-size: 0.9em;">
-            <div id="tcl_in" style="float: left; height: 100%; width: 50%;"><textarea style="box-sizing:border-box; width: 100%; height: 100%; font-family: monospace; font-size: 0.9em;">package require TclOO
+          <div class="demoarea">
+            <div id="tcl_in"><textarea>package require TclOO
 oo::class create summation {
     constructor {} {
         variable v 0
@@ -73,16 +73,12 @@ for {set i 1} {$i &lt;= 10} {incr i} {
     puts "Add $i to get [$sum add $i]"
 }
 summation destroy</textarea></div>
-            <div id="tcl_out" style="float: left; height: 100%; width: 50%;"><!--
-           --><div style="height: 100%; border-width: 1px; border-style: solid; border-color: black;"><!--
-             --><pre style="border-style: none; font-size: 0.9em; margin: 2px; height: 100%;"></pre><!--
-           --></div><!--
-         --></div>
+            <div id="tcl_out"><div><pre></pre></div></div>
           </div>
 
           <button id="jimtcl_run">Run!</button>
-          <div id="demoarea" style="height: 400px; font-size: 0.9em;">
-            <div id="jimtcl_in" style="float: left; height: 100%; width: 50%;"><textarea style="box-sizing:border-box; width: 100%; height: 100%; font-family: monospace; font-size: 0.9em;">proc roman_numeral {i} {
+          <div class="demoarea">
+            <div id="jimtcl_in"><textarea>proc roman_numeral {i} {
     set num_map {
         1000 M 900 CM 500 D 400 CD
         100 C 90 XC 50 L 40 XL
@@ -102,11 +98,7 @@ foreach {n} {5 22 1654} {
     puts "$n - [roman_numeral $n]"
 }</textarea></div>
 
-            <div id="jimtcl_out" style="float: left; height: 100%; width: 50%;"><!--
-           --><div style="height: 100%; border-width: 1px; border-style: solid; border-color: black;"><!--
-             --><pre style="border-style: none; font-size: 0.9em; margin: 2px; height: 100%;"></pre><!--
-           --></div><!--
-         --></div>
+            <div id="jimtcl_out"><div><pre></pre></div></div>
           </div>
 
           <script>
