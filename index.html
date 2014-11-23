@@ -10,6 +10,7 @@
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <!--<script type="text/javascript" src="javascripts/script.js"></script>-->
   <script type="text/javascript" src="lib/emtcl.js"></script>
+  <script type="text/javascript" src="lib/emjimtcl.js"></script>
 
   <title>EmTcl</title>
   <meta name="description" content="Tcl compiled with emscripten">
@@ -40,11 +41,12 @@
           <p>This is a simple test page for running Tcl in the browser.</p>
           <p>The box on the left holds input, the right holds output. You can
             <ul>
-              <li>Hit 'Run!' to evaluate, inspect output, tweak and re-run.</li>
+              <li>Hit 'Run!' to evaluate, inspect output, tweak input and re-run.</li>
               <li>Hit Ctrl+Enter to use it in a more repl-like manner (which will clear the input box and generally make a vague effort to be a bit like tclsh).</li>
             </ul>
             stdout and stderr are displayed on the alongside script output (like in tclsh).
           </p>
+
           <button id="tcl_run">Run!</button>
           <div id="demoarea" style="height: 400px; font-size: 0.9em;">
             <div id="tcl_in" style="float: left; height: 100%; width: 50%;"><textarea style="box-sizing:border-box; width: 100%; height: 100%; font-family: monospace; font-size: 0.9em;">package require TclOO
@@ -72,45 +74,82 @@ for {set i 1} {$i &lt;= 10} {incr i} {
 }
 summation destroy</textarea></div>
             <div id="tcl_out" style="float: left; height: 100%; width: 50%;"><!--
-            --><div style="height: 100%; border-width: 1px; border-style: solid; border-color: black;"><pre style="border-style: none; font-size: 0.9em; margin: 2px; height: 100%;"></pre></div><!--
-            --></div>
+           --><div style="height: 100%; border-width: 1px; border-style: solid; border-color: black;"><!--
+             --><pre style="border-style: none; font-size: 0.9em; margin: 2px; height: 100%;"></pre><!--
+           --></div><!--
+         --></div>
           </div>
+
+          <button id="jimtcl_run">Run!</button>
+          <div id="demoarea" style="height: 400px; font-size: 0.9em;">
+            <div id="jimtcl_in" style="float: left; height: 100%; width: 50%;"><textarea style="box-sizing:border-box; width: 100%; height: 100%; font-family: monospace; font-size: 0.9em;">proc roman_numeral {i} {
+    set num_map {
+        1000 M 900 CM 500 D 400 CD
+        100 C 90 XC 50 L 40 XL
+        10 X 9 IX 5 V 4 IV 1 I
+    }
+    set res ""
+    foreach {value roman} $num_map {
+        while {$i &gt;= $value} {
+            append res $roman
+            incr i -$value
+        }
+    }
+    return $res
+}
+
+foreach {n} {5 22 1654} {
+    puts "$n - [roman_numeral $n]"
+}</textarea></div>
+
+            <div id="jimtcl_out" style="float: left; height: 100%; width: 50%;"><!--
+           --><div style="height: 100%; border-width: 1px; border-style: solid; border-color: black;"><!--
+             --><pre style="border-style: none; font-size: 0.9em; margin: 2px; height: 100%;"></pre><!--
+           --></div><!--
+         --></div>
+          </div>
+
           <script>
-            'use strict';
-            var $inbox = $('#tcl_in > textarea');
-            var $outbox = $('#tcl_out > div > pre');
-            var outln = function (val) {
-              $outbox.text($outbox.text() + val + '\n');
-              $outbox[0].scrollTop = $outbox[0].scrollHeight;
-            }
-
-            var eval_tcl = (function () {
-              var interp = emtcl.CreateInterp();
-              emtcl.Module.print = emtcl.Module.printErr = outln;
-
-              return function (evalstr) {
-                // This prints any stdout
-                var retval = emtcl.Eval(interp, evalstr);
-                var retstr = emtcl.GetStringResult(interp);
-                // Emulate tclsh a bit
-                if (retstr !== '') {
-                  outln(emtcl.GetStringResult(interp));
-                }
-                outln('------' + (retval ? 'ERR ABOVE!' : '') + '------');
-              };
-            })();
-            $('#tcl_run').on('click', function () {
-                eval_tcl($('#tcl_in > textarea').val());
-            });
-            $inbox.keydown(function (e) {
-              // Ctrl-Enter pressed
-              if ((e.keyCode == 10 || e.keyCode == 13) && e.ctrlKey) {
-                outln('% ' + $inbox.val());
-                eval_tcl($inbox.val());
-                $inbox.val('');
+            function setupRepl(prefix, module) {
+              'use strict';
+              var $inbox = $('#' + prefix + '_in > textarea');
+              var $outbox = $('#' + prefix + '_out > div > pre');
+              var outln = function (val) {
+                $outbox.text($outbox.text() + val + '\n');
+                $outbox[0].scrollTop = $outbox[0].scrollHeight;
               }
-            });
-            eval_tcl('puts "Tcl version: [info patchlevel]"');
+
+              var eval_tcl = (function () {
+                var interp = module.CreateInterp();
+                // Override default printing
+                module.Module.print = module.Module.printErr = outln;
+
+                return function (evalstr) {
+                  // This prints any stdout
+                  var retval = module.Eval(interp, evalstr);
+                  var retstr = module.GetStringResult(interp);
+                  // Emulate tclsh a bit
+                  if (retstr !== '') {
+                    outln(module.GetStringResult(interp));
+                  }
+                  outln('------' + (retval ? 'ERR ABOVE!' : '') + '------');
+                };
+              })();
+              $('#' + prefix + '_run').on('click', function () {
+                  eval_tcl($('#' + prefix + '_in > textarea').val());
+              });
+              $inbox.keydown(function (e) {
+                // Ctrl-Enter pressed
+                if ((e.keyCode == 10 || e.keyCode == 13) && e.ctrlKey) {
+                  outln('% ' + $inbox.val());
+                  eval_tcl($inbox.val());
+                  $inbox.val('');
+                }
+              });
+              eval_tcl('puts "' + prefix + ' version: [info patchlevel]"');
+            }
+            setupRepl('tcl', emtcl);
+            setupRepl('jimtcl', emjimtcl);
           </script>
         </article>
       </div>
