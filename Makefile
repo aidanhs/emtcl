@@ -1,3 +1,5 @@
+# Optimisation to use for generating bc
+BCFLAGS=-Oz
 # post-js happens later to write cwrap code conditional on tcl distro
 EMFLAGS=\
 	--pre-js js/preJs.js\
@@ -46,10 +48,12 @@ emjimtcl.bc:
 tclprep:
 	cd tcl && git apply ../tclhacks.patch
 	cd tcl/unix && emconfigure ./configure --disable-threads --disable-load --disable-shared
+	cd tcl/unix && sed -i 's/-O2/$(BCFLAGS)/g' Makefile
 
 jimtclprep:
 	cd jimtcl && emconfigure ./configure --full --disable-docs
 	cd jimtcl && git apply ../jimtclhacks.patch
+	cd jimtcl && sed -i 's/^\(CFLAGS = .*\)$$/\1 $(BCFLAGS)/g' Makefile
 
 reset:
 	@read -p "This nukes anything not git-controlled in ./tcl/ and ./jimtcl/, are you sure? Type 'y' if so: " P && [ $$P = y ]
