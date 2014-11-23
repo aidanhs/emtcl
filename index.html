@@ -67,16 +67,14 @@
           <div class="demoarea">
             <div id="tcl_in"><textarea>package require TclOO
 oo::class create summation {
-    constructor {} {
-        variable v 0
+    constructor {} { variable v 0 }
+    destructor {
+        variable v
+        puts "Ended with value $v"
     }
     method add x {
         variable v
         incr v $x
-    }
-    destructor {
-        variable v
-        puts "Ended with value $v"
     }
 }
 set sum [summation new]
