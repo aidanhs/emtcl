@@ -904,6 +904,22 @@ footer .owner p a {
 }
 
 /*********** CUSTOM ************/
+#dom-playground {
+  min-width: 200px;
+  position: absolute;
+  right: 0;
+}
+
+#dom-playground, #dom-playground * {
+  padding: 3px;
+  margin: 2px;
+  background-color: white;
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+  list-style-position: inside;
+}
+
 .demoarea {
   height: 400px;
   font-size: 0.9em;

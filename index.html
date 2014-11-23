@@ -47,6 +47,22 @@
             stdout and stderr are displayed on the alongside script output (like in tclsh).
           </p>
 
+          <div id="dom-playground">
+            #dom-playground
+            <div id="dom-a">div#dom-a</div>
+            <div id="dom-b">div#dom-b
+              <div class="dom-subchild">div.dom-child</div>
+            </div>
+            <div id="dom-c">div#dom-c
+              <ul class="dom-subchild">ul.dom-subchild
+                <li>li</li>
+                <li>li</li>
+              </ul>
+            </div>
+            <div id="dom-d">div#dom-d<br>
+              <span class="dom-subchild">span.dom-subchild</span>
+            </div>
+          </div>
           <button id="tcl_run">Run!</button>
           <div class="demoarea">
             <div id="tcl_in"><textarea>package require TclOO
@@ -58,21 +74,20 @@ oo::class create summation {
         variable v
         incr v $x
     }
-    method value {} {
-        variable v
-        return $v
-    }
     destructor {
         variable v
         puts "Ended with value $v"
     }
 }
 set sum [summation new]
-puts "Start with [$sum value]"
 for {set i 1} {$i &lt;= 10} {incr i} {
     puts "Add $i to get [$sum add $i]"
 }
-summation destroy</textarea></div>
+summation destroy
+
+# Toy DOM library written for the EmTcl demo
+dom attr "#dom-d &gt; span" textContent CHANGE
+dom css #dom-playground backgroundColor red</textarea></div>
             <div id="tcl_out"><div><pre></pre></div></div>
           </div>
 
@@ -113,6 +128,7 @@ foreach {n} {5 22 1654} {
 
               var eval_tcl = (function () {
                 var interp = module.CreateInterp();
+                module.interp = interp;
                 // Override default printing
                 module.Module.print = module.Module.printErr = outln;
 
@@ -141,6 +157,7 @@ foreach {n} {5 22 1654} {
               eval_tcl('puts "' + prefix + ' version: [info patchlevel]"');
             }
             setupRepl('tcl', emtcl);
+            emtcl.Module.ccall('CreateDomCmd', 'number', ['number'], [emtcl.interp]);
             setupRepl('jimtcl', emjimtcl);
           </script>
         </article>
