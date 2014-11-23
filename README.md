@@ -9,6 +9,8 @@ Current supported interpreters (and their versions) are:
  - tcl - core\_8\_6\_1
  - jimtcl - 0.75
 
+Tcl comes with a toy DOM library as a demo. See EXTRAS.
+
 BUILD
 -----
 
@@ -22,11 +24,26 @@ or for jimtcl:
     $ make jimtclprep # One off prep - tweaks appropriate #defines and configure
     $ make emjimtcl   # Build emjimtcl.js
 
-If you want to totally reset all build files in ./tcl/ and start again:
+If you want to totally reset all build files in ./tcl/ and ./jimtcl/ and start again:
 
     $ make reset
 
-This removes all changes in there, so be careful!
+This removes all changes and untracked files in there, so be careful!
+
+EXTRAS
+------
+
+EmTcl (not EmJimTcl) comes with a toy DOM library compiled into it by default
+as a demonstration of how one could do interesting things.
+
+It currently is a command of the form `dom attr|css selector key val`. It sets
+the appropriate key in either the attribute or style dictionary of each element
+returned by the selector. It will return the number of elements modified. Note
+that style keys are in their camelcase form (backgroundColor vs background-color)
+as the styles are changed in the element style dictionary.
+
+You can see the code in opt/dom.c. If you really want to compile without it, do
+`make emtcl EMTCLDOM=0`.
 
 TODO
 ----
