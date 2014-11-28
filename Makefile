@@ -56,7 +56,7 @@ tclprep:
 	cd tcl/unix && sed -i 's/-O2/$(BCFLAGS)/g' Makefile
 
 jimtclprep:
-	cd jimtcl && emconfigure ./configure --full --disable-docs
+	cd jimtcl && emconfigure ./configure --full --disable-docs --without-ext=regexp
 	cd jimtcl && git apply ../jimtclhacks.patch
 	cd jimtcl && sed -i 's/^\(CFLAGS = .*\)$$/\1 $(BCFLAGS)/g' Makefile
 
