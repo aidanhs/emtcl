@@ -22,6 +22,7 @@ EMJIMTCLEXPORTS=\
 	-s EXPORTED_FUNCTIONS="[\
 		'_Jim_CreateInterp',\
 		'_Jim_RegisterCoreCommands',\
+		'_Jim_InitStaticExtensions',\
 		'_Jim_Eval',\
 		'_Jim_GetString',\
 		'_Jim_GetResult',\

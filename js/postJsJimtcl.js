@@ -14,9 +14,11 @@
 
   var createInterp = root.Module.cwrap('Jim_CreateInterp', 'number', []);
   var registerCoreCommands = root.Module.cwrap('Jim_RegisterCoreCommands', 'number', ['number']);
+  var initStaticExtensions = root.Module.cwrap('Jim_InitStaticExtensions', 'number', ['number']);
   root.CreateInterp = function () {
     var interp = createInterp();
     registerCoreCommands(interp);
+    initStaticExtensions(interp);
     return interp;
   }
   root.Eval = root.Module.cwrap('Jim_Eval', 'number', [
