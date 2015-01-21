@@ -2,7 +2,7 @@
 EMTCLDOM?=1
 
 # Optimisation to use for generating bc
-BCFLAGS=-Oz
+BCFLAGS?=-Oz
 # post-js happens later to write cwrap code conditional on tcl distro
 EMFLAGS=\
 	--pre-js js/preJs.js\
